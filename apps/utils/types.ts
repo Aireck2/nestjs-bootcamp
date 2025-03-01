@@ -9,3 +9,8 @@ export type Product = {
   discount: number;
   priceWithDiscount: number;
 };
+
+export type ErrorResponse = {
+  statusCode: number;
+  message: string;
+};

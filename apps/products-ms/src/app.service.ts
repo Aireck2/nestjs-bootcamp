@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { Product } from "./utils/types";
+import { Product } from "../../utils/types";
 
 @Injectable()
 export class AppService {
