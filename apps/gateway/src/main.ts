@@ -1,13 +1,13 @@
 import { NestFactory } from "@nestjs/core";
 import { GatewayModule } from "./gateway.module";
-import { ValidationPipe } from "@nestjs/common";
-import { ExampleGuard } from "./example/example.guard";
+import { ConfigService } from "@nestjs/config";
 
 async function bootstrap() {
   const app = await NestFactory.create(GatewayModule);
-  const PORT = 3000;
+  const configService = app.get(ConfigService);
+  const PORT = configService.get<number>("APP_PORT");
   app.setGlobalPrefix("api");
-  await app.listen(process.env.port ?? PORT);
+  await app.listen(PORT);
 
   // app.useGlobalPipes(
   //   new ValidationPipe({
@@ -16,7 +16,6 @@ async function bootstrap() {
   //     transform: true, // transformar los datos de entrada a su tipo correcto
   //   })
   // );
-  app.useGlobalGuards(new ExampleGuard());
   console.log(`Gateway is listening on ${await app.getUrl()}`);
 }
 bootstrap();

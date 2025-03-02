@@ -27,6 +27,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/gateway/tsconfig.app.json"
       }
+    },
+    "auth-ms": {
+      "type": "application",
+      "root": "apps/auth-ms",
+      "entryFile": "main",
+      "sourceRoot": "apps/auth-ms/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/auth-ms/tsconfig.app.json"
+      }
     }
   }
 }

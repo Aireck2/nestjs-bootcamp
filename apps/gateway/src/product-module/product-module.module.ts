@@ -13,11 +13,11 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
         imports: [ConfigModule],
         inject: [ConfigService],
 
-        useFactory: () => ({
+        useFactory: (configService: ConfigService) => ({
           transport: Transport.TCP,
           options: {
             host: "localhost",
-            port: 3001,
+            port: configService.get("PRODUCTS_MS_PORT"),
           },
         }),
       },

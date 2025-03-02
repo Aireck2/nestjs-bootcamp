@@ -2,22 +2,23 @@ import { Module } from "@nestjs/common";
 import { GatewayController } from "./gateway.controller";
 import { GatewayService } from "./gateway.service";
 import { ConfigModule } from "@nestjs/config";
-import * as Joi from "joi";
 import { ProductModuleModule } from "./product-module/product-module.module";
-import { AuthModule } from "./auth/auth.module";
+import { AuthModuleModule } from "./auth-module/auth-module.module";
+import * as Joi from "joi";
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      // validationSchema: Joi.object({
-      //   APP_PORT: Joi.number().default(3000),
-      //   DATABASE_USER: Joi.string().required(),
-      //   DATABASE_PASSWORD: Joi.string().required(),
-      // }),
+      validationSchema: Joi.object({
+        APP_PORT: Joi.number().required(),
+        PRODUCTS_MS_PORT: Joi.number().required(),
+        AUTH_MS_PORT: Joi.number().required(),
+        JWT_SECRET: Joi.string().required(),
+      }),
     }),
     ProductModuleModule,
-    AuthModule,
+    AuthModuleModule,
   ],
   controllers: [GatewayController],
   providers: [GatewayService],
