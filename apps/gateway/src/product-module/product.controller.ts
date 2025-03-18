@@ -16,7 +16,7 @@ import { lastValueFrom } from "rxjs";
 export class ProductController {
   constructor(
     @Inject("PRODUCTS_SERVICE")
-    private readonly productClient: ClientProxy
+    private readonly productClient: ClientProxy,
   ) {}
 
   @Get()
@@ -26,11 +26,11 @@ export class ProductController {
   @Get(":productId")
   async getProductById(
     @Param("productId")
-    idProducto: string
+    productId: string,
   ): Promise<Product | ErrorResponse> {
     try {
       return await lastValueFrom(
-        this.productClient.send("getProductById", idProducto)
+        this.productClient.send("getProductById", productId),
       );
     } catch (error) {
       console.error("error:", error);
@@ -45,10 +45,10 @@ export class ProductController {
   @Post()
   async createProduct(
     @Body()
-    newProductoBody: Product
+    newProductoBody: Product,
   ): Promise<Product> {
     return await lastValueFrom(
-      this.productClient.send("createProduct", newProductoBody)
+      this.productClient.send("createProduct", newProductoBody),
     );
   }
 
@@ -57,14 +57,14 @@ export class ProductController {
     @Param("productId")
     productId: string,
     @Body()
-    newProductoBody: Product
+    newProductoBody: Product,
   ): Promise<Product> {
     try {
       return await lastValueFrom(
         this.productClient.send("updateProduct", {
           productId,
           newProductoBody,
-        })
+        }),
       );
     } catch (error) {
       console.error("error:", error);
@@ -75,10 +75,10 @@ export class ProductController {
   @Delete(":productId")
   async removeProduct(
     @Param("productId")
-    productId: string
+    productId: string,
   ): Promise<string> {
     return await lastValueFrom(
-      this.productClient.send("removeProduct", productId)
+      this.productClient.send("removeProduct", productId),
     );
   }
 }

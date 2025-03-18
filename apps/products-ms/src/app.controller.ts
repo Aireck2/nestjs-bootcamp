@@ -1,47 +1,45 @@
-import { Controller } from "@nestjs/common";
+import { Controller, UsePipes, ValidationPipe } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
-
-import { Product } from "../../utils/types";
-import { AppService } from "./app.service";
+import { ProductService } from "./product.service";
+import { ProductEntity } from "./products/entities/product.entity";
+import { CreateProductDto } from "./dto/create-product.dto";
 
 @Controller("v1/products")
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly productsService: ProductService) {}
 
   @MessagePattern("getProducts")
-  async getProducts(): Promise<Product[]> {
-    return await this.appService.getAllProducts();
+  findAll() {
+    return this.productsService.findAll();
   }
 
   @MessagePattern("getProductById")
-  getProductById(
-    @Payload()
-    idProducto: string
-  ): Product {
+  getProductById(@Payload() productId: number) {
     try {
-      return this.appService.findProductById(idProducto);
+      return this.productsService.findById(Number(productId));
     } catch (error) {
       console.error("error:", error);
       throw new Error("An error happened!");
     }
   }
 
+  @UsePipes(new ValidationPipe())
   @MessagePattern("createProduct")
   createProduct(
     @Payload()
-    newProductoBody: Product
-  ): Product {
-    return this.appService.createProduct(newProductoBody);
+    createProductDto: CreateProductDto,
+  ) {
+    return this.productsService.createProduct(createProductDto);
   }
 
   @MessagePattern("updateProduct")
   updateProduct(
     @Payload()
-    valoresUpdate: any
-  ): Product {
+    updateProductDto: ProductEntity,
+  ) {
     try {
-      const { idProducto, newProductoBody } = valoresUpdate;
-      return this.appService.updateProduct(idProducto, newProductoBody);
+      const { id, ...newProduct } = updateProductDto;
+      return this.productsService.updateProduct(Number(id), newProduct);
     } catch (error) {
       console.error("error:", error);
       throw new Error("An error happened!");
@@ -51,10 +49,11 @@ export class AppController {
   @MessagePattern("removeProduct")
   removeProduct(
     @Payload()
-    idProducto: string
+    idProducto: string,
   ) {
     try {
-      return this.appService.deleteProduct(idProducto);
+      // return this.productsService.removeProduct(idProducto);
+      return {};
     } catch (error) {
       console.error("error:", error);
       throw new Error("An error happened!");
