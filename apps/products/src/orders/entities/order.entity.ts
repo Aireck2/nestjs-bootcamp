@@ -1,1 +1,57 @@
-export class Order {}
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
+import { ProductEntity } from '../../products/entities/product.entity';
+import { UserEntity } from '../../../../users/src/users/entities/user.entity';
+
+export enum OrderStatus {
+  PENDING = 'pending',
+  COMPLETED = 'completed',
+  CANCELLED = 'cancelled',
+}
+
+@Entity('orders')
+export class OrderEntity {
+  @PrimaryGeneratedColumn({ name: 'order_id' })
+  id: number;
+
+  @ManyToOne(() => ProductEntity, (product) => product.id, { eager: true })
+  @JoinColumn({ name: 'product_id' })
+  productId: number;
+
+  @ManyToOne(() => UserEntity, (user) => user.id, { eager: true })
+  @JoinColumn({ name: 'user_id' })
+  userId: number;
+
+  @Column({
+    type: 'enum',
+    enum: OrderStatus,
+    default: OrderStatus.PENDING,
+  })
+  status: OrderStatus;
+
+  @Column({ name: 'final_price', type: 'numeric', precision: 10, scale: 2 })
+  finalPrice: number;
+
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: Date;
+}
