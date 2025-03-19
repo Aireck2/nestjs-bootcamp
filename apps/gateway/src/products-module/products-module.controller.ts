@@ -26,7 +26,7 @@ export class ProductsModuleController {
   @Get()
   findAll() {
     console.log('controller');
-    return this.productClient.send('findAll', {});
+    return this.productClient.send('findAllProducts', {});
   }
 
   @Get(':id')

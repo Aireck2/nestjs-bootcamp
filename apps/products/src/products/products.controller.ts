@@ -13,8 +13,9 @@ export class ProductsController {
     return this.productsService.create(createProductDto);
   }
 
-  @MessagePattern('findAll')
+  @MessagePattern('findAllProducts')
   findAll() {
+    console.log('Find all controller ms');
     return this.productsService.findAll();
   }
 
