@@ -6,6 +6,12 @@ import { LoginHistoryModuleModule } from './login-history-module/login-history-m
 import { AuthModuleModule } from './auth-module/auth-module.module';
 
 @Module({
-  imports: [ProductsModuleModule, OrdersModuleModule, UsersModuleModule, LoginHistoryModuleModule, AuthModuleModule],
+  imports: [
+    ProductsModuleModule,
+    OrdersModuleModule,
+    UsersModuleModule,
+    LoginHistoryModuleModule,
+    AuthModuleModule,
+  ],
 })
 export class GatewayModule {}
