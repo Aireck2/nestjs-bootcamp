@@ -1,12 +1,14 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
   Inject,
+  Param,
+  Patch,
+  Post,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreateUserDto } from 'apps/users/src/users/dto/create-user.dto';
@@ -16,28 +18,29 @@ import { UpdateUserDto } from 'apps/users/src/users/dto/update-user.dto';
 export class UsersModuleController {
   constructor(@Inject('USERS_MS') private readonly usersClient: ClientProxy) {}
 
+  @UsePipes(new ValidationPipe())
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    return this.usersClient.send('create', createUserDto);
+    return this.usersClient.send('createUser', createUserDto);
   }
 
   @Get()
   findAll() {
-    return this.usersClient.send('findAll', {});
+    return this.usersClient.send('findAllUsers', {});
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersClient.send('findOne', { id });
+    return this.usersClient.send('findUser', { id });
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersClient.send('update', { id, ...updateUserDto });
+    return this.usersClient.send('updateUser', { id, ...updateUserDto });
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.usersClient.send('remove', { id });
+    return this.usersClient.send('removeUser', { id });
   }
 }
