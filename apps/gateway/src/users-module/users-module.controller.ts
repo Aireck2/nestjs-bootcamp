@@ -7,10 +7,12 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { PaginationDto } from 'apps/common/dtos/pagination.dto';
 import { CreateUserDto } from 'apps/users/src/users/dto/create-user.dto';
 import { UpdateUserDto } from 'apps/users/src/users/dto/update-user.dto';
 
@@ -25,8 +27,8 @@ export class UsersModuleController {
   }
 
   @Get()
-  findAll() {
-    return this.usersClient.send('findAllUsers', {});
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.usersClient.send('findAllUsers', paginationDto);
   }
 
   @Get(':id')

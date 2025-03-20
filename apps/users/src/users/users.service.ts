@@ -1,5 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PER_PAGE } from 'apps/common/constants';
+import { PaginationDto } from 'apps/common/dtos/pagination.dto';
+import { getPageInfo } from 'apps/common/utils';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -17,11 +20,17 @@ export class UsersService {
     };
   }
 
-  async findAll() {
-    console.log('findAll');
-    return {
-      data: await this.userRepository.find(),
-    };
+  async findAll(pagination: PaginationDto) {
+    const { page = 1, per_page = PER_PAGE } = pagination;
+
+    const [data, total] = await this.userRepository.findAndCount({
+      take: per_page,
+      skip: (page - 1) * per_page,
+    });
+
+    const pageInfo = getPageInfo(total, page, per_page);
+
+    return { pageInfo, data };
   }
 
   async findOne(id: number) {
