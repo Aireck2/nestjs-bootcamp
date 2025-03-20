@@ -6,8 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { PaginationDto } from 'apps/common/dtos/pagination.dto';
 import { CreateOrderDto } from 'apps/products/src/orders/dto/create-order.dto';
 import { UpdateOrderDto } from 'apps/products/src/orders/dto/update-order.dto';
 
@@ -23,8 +25,8 @@ export class OrdersModuleController {
   }
 
   @Get()
-  findAll() {
-    return this.ordersClient.send('findAllOrders', {});
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.ordersClient.send('findAllOrders', paginationDto);
   }
 
   @Get(':id')

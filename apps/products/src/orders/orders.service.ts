@@ -1,5 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PER_PAGE } from 'apps/common/constants';
+import { PaginationDto } from 'apps/common/dtos/pagination.dto';
+import { getPageInfo } from 'apps/common/utils';
 import { Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -17,12 +20,17 @@ export class OrdersService {
     };
   }
 
-  async findAll() {
-    return {
-      data: await this.orderRepository.find({
-        relations: ['product', 'user'],
-      }),
-    };
+  async findAll(paginationDto: PaginationDto) {
+    const { page = 1, per_page = PER_PAGE } = paginationDto;
+
+    const [data, total] = await this.orderRepository.findAndCount({
+      take: per_page,
+      skip: (page - 1) * per_page,
+    });
+
+    const pageInfo = getPageInfo(total, page, per_page);
+
+    return { pageInfo, data };
   }
 
   async findOne(id: number) {
