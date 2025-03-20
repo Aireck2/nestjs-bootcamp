@@ -6,10 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { PaginationDto } from 'apps/common/dtos/pagination.dto';
 import { CreateLoginHistoryDto } from 'apps/users/src/login-history/dto/create-login-history.dto';
 import { UpdateLoginHistoryDto } from 'apps/users/src/login-history/dto/update-login-history.dto';
 
@@ -30,8 +32,8 @@ export class LoginHistoryModuleController {
   }
 
   @Get()
-  findAll() {
-    return this.loginHistoryClient.send('findAllLoginHistory', {});
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.loginHistoryClient.send('findAllLoginHistory', paginationDto);
   }
 
   @Get(':id')

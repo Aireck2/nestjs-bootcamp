@@ -1,5 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PER_PAGE } from 'apps/common/constants';
+import { PaginationDto } from 'apps/common/dtos/pagination.dto';
+import { getPageInfo } from 'apps/common/utils';
 import { Repository } from 'typeorm';
 import { CreateLoginHistoryDto } from './dto/create-login-history.dto';
 import { UpdateLoginHistoryDto } from './dto/update-login-history.dto';
@@ -17,10 +20,17 @@ export class LoginHistoryService {
     };
   }
 
-  async findAll() {
-    return {
-      data: await this.loginHistoryRepository.find(),
-    };
+  async findAll(paginationDto: PaginationDto) {
+    const { page = 1, per_page = PER_PAGE } = paginationDto;
+
+    const [data, total] = await this.loginHistoryRepository.findAndCount({
+      take: per_page,
+      skip: (page - 1) * per_page,
+      relations: ['user'], // Ensure this relation exists in the entity
+    });
+    const pageInfo = getPageInfo(total, page, per_page);
+
+    return { data, pageInfo };
   }
 
   async findOne(id: number) {

@@ -1,5 +1,6 @@
 import { Controller } from '@nestjs/common/decorators';
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import { PaginationDto } from 'apps/common/dtos/pagination.dto';
 import { CreateLoginHistoryDto } from './dto/create-login-history.dto';
 import { UpdateLoginHistoryDto } from './dto/update-login-history.dto';
 import { LoginHistoryService } from './login-history.service';
@@ -14,8 +15,8 @@ export class LoginHistoryController {
   }
 
   @MessagePattern('findAllLoginHistory')
-  findAll() {
-    return this.loginHistoryService.findAll();
+  findAll(@Payload() paginationDto: PaginationDto) {
+    return this.loginHistoryService.findAll(paginationDto);
   }
 
   @MessagePattern('findLoginHistory')

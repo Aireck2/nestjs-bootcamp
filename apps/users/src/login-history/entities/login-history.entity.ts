@@ -1,4 +1,5 @@
 import {
+  Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
@@ -12,12 +13,12 @@ export class LoginHistoryEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => UserEntity, (user) => user.id, {
-    nullable: false,
-    eager: true,
-  })
+  @Column({ name: 'user_id' })
+  userId: number;
+
+  @ManyToOne(() => UserEntity, { eager: false })
   @JoinColumn({ name: 'user_id' })
-  user: UserEntity;
+  user?: UserEntity;
 
   @CreateDateColumn({
     type: 'timestamptz',
