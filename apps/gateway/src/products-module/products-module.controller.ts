@@ -8,8 +8,9 @@ import {
   Post,
   ValidationPipe,
 } from '@nestjs/common';
-import { Inject, UsePipes } from '@nestjs/common/decorators';
+import { Inject, Query, UsePipes } from '@nestjs/common/decorators';
 import { ClientProxy } from '@nestjs/microservices';
+import { PaginationDto } from 'apps/common/dtos/pagination.dto';
 import { CreateProductDto } from 'apps/products/src/products/dto/create-product.dto';
 import { UpdateProductDto } from 'apps/products/src/products/dto/update-product.dto';
 
@@ -26,9 +27,8 @@ export class ProductsModuleController {
   }
 
   @Get()
-  findAll() {
-    console.log('controller');
-    return this.productClient.send('findAllProducts', {});
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.productClient.send('findAllProducts', paginationDto);
   }
 
   @Get(':id')

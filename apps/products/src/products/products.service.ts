@@ -1,9 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { PER_PAGE } from 'apps/common/constants';
+import { PaginationDto } from 'apps/common/dtos/pagination.dto';
+import { getPageInfo } from 'apps/common/utils';
+import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { ProductEntity } from './entities/product.entity';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class ProductsService {
@@ -18,8 +21,17 @@ export class ProductsService {
     };
   }
 
-  async findAll() {
-    return { data: await this.productRepository.find() };
+  async findAll(paginationDto: PaginationDto) {
+    const { page = 1, per_page = PER_PAGE } = paginationDto;
+
+    const [data, total] = await this.productRepository.findAndCount({
+      take: per_page,
+      skip: (page - 1) * per_page,
+    });
+
+    const pageInfo = getPageInfo(total, page, per_page);
+
+    return { pageInfo, data };
   }
 
   async findOne(id: number) {
