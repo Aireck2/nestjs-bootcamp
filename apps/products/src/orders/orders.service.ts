@@ -19,13 +19,16 @@ export class OrdersService {
 
   async findAll() {
     return {
-      data: await this.orderRepository.find(),
+      data: await this.orderRepository.find({
+        relations: ['product', 'user'],
+      }),
     };
   }
 
   async findOne(id: number) {
     const order = await this.orderRepository.findOne({
       where: { id },
+      relations: ['product', 'user'],
     });
 
     if (!order) {

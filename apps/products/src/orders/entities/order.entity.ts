@@ -8,8 +8,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { ProductEntity } from '../../products/entities/product.entity';
 import { UserEntity } from '../../../../users/src/users/entities/user.entity';
+import { ProductEntity } from '../../products/entities/product.entity';
 
 export enum OrderStatus {
   PENDING = 'pending',
@@ -22,13 +22,13 @@ export class OrderEntity {
   @PrimaryGeneratedColumn({ name: 'order_id' })
   id: number;
 
-  @ManyToOne(() => ProductEntity, (product) => product.id, { eager: true })
+  @ManyToOne(() => ProductEntity, (product) => product.id, { eager: false })
   @JoinColumn({ name: 'product_id' })
-  productId: number;
+  product: ProductEntity;
 
-  @ManyToOne(() => UserEntity, (user) => user.id, { eager: true })
+  @ManyToOne(() => UserEntity, (user) => user.id, { eager: false })
   @JoinColumn({ name: 'user_id' })
-  userId: number;
+  user: UserEntity;
 
   @Column({
     type: 'enum',
