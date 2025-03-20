@@ -6,8 +6,9 @@ import {
   Param,
   Patch,
   Post,
+  ValidationPipe,
 } from '@nestjs/common';
-import { Inject } from '@nestjs/common/decorators';
+import { Inject, UsePipes } from '@nestjs/common/decorators';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreateProductDto } from 'apps/products/src/products/dto/create-product.dto';
 import { UpdateProductDto } from 'apps/products/src/products/dto/update-product.dto';
@@ -19,8 +20,9 @@ export class ProductsModuleController {
   ) {}
 
   @Post()
+  @UsePipes(new ValidationPipe())
   create(@Body() createProductDto: CreateProductDto) {
-    return this.productClient.send('create', createProductDto);
+    return this.productClient.send('createProduct', createProductDto);
   }
 
   @Get()
@@ -31,16 +33,19 @@ export class ProductsModuleController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.productClient.send('findOne', { id });
+    return this.productClient.send('findProduct', { id });
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productClient.send('update', { id, ...updateProductDto });
+    return this.productClient.send('updateProduct', {
+      id,
+      ...updateProductDto,
+    });
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.productClient.send('remove', { id });
+    return this.productClient.send('removeProduct', { id });
   }
 }

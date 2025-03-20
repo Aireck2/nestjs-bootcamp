@@ -8,7 +8,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
-  @MessagePattern('create')
+  @MessagePattern('createProduct')
   create(@Payload() createProductDto: CreateProductDto) {
     return this.productsService.create(createProductDto);
   }
@@ -19,18 +19,18 @@ export class ProductsController {
     return this.productsService.findAll();
   }
 
-  @MessagePattern('findOne')
+  @MessagePattern('findProduct')
   findOne(@Payload('id') id: string) {
     return this.productsService.findOne(+id);
   }
 
-  @MessagePattern('update')
+  @MessagePattern('updateProduct')
   update(@Payload() payload: UpdateProductDto & { id: string }) {
     const { id, ...updateProductDto } = payload;
     return this.productsService.update(+id, updateProductDto);
   }
 
-  @MessagePattern('remove')
+  @MessagePattern('removeProduct')
   remove(@Payload('id') id: string) {
     return this.productsService.remove(+id);
   }

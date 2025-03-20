@@ -20,6 +20,9 @@ export class ProductEntity {
   @Column({ type: 'numeric', precision: 10, scale: 2 })
   price: number;
 
+  @Column('text', { array: true, nullable: true })
+  images: string[];
+
   @Column({ name: 'has_discount', type: 'boolean', default: false })
   hasDiscount: boolean;
 
@@ -29,6 +32,10 @@ export class ProductEntity {
     precision: 5,
     scale: 2,
     default: 0,
+    transformer: {
+      to: (value: number) => value,
+      from: (value: string) => parseFloat(value),
+    },
   })
   percentageDiscount: number;
 
