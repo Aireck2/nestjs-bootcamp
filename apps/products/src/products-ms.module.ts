@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProductsModule } from './products/products.module';
-import { OrdersModule } from './orders/orders.module';
 import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserEntity } from 'apps/users/src/users/entities/user.entity';
+import { OrderEntity } from './orders/entities/order.entity';
+import { OrdersModule } from './orders/orders.module';
 import { ProductEntity } from './products/entities/product.entity';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -17,7 +19,7 @@ import { ProductEntity } from './products/entities/product.entity';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [ProductEntity],
+      entities: [ProductEntity, OrderEntity, UserEntity],
       extra: {
         ssl: true,
       },

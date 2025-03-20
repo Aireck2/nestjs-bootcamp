@@ -1,12 +1,11 @@
 import {
+  Body,
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
   Inject,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreateOrderDto } from 'apps/products/src/orders/dto/create-order.dto';
@@ -20,17 +19,17 @@ export class OrdersModuleController {
 
   @Post()
   create(@Body() createOrdersModuleDto: CreateOrderDto) {
-    return this.ordersClient.send('create', createOrdersModuleDto);
+    return this.ordersClient.send('createOrder', createOrdersModuleDto);
   }
 
   @Get()
   findAll() {
-    return this.ordersClient.send('findAll', {});
+    return this.ordersClient.send('findAllOrders', {});
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.ordersClient.send('findOne', { id });
+    return this.ordersClient.send('findOrder', { id });
   }
 
   @Patch(':id')
@@ -38,11 +37,9 @@ export class OrdersModuleController {
     @Param('id') id: string,
     @Body() updateOrdersModuleDto: UpdateOrderDto,
   ) {
-    return this.ordersClient.send('update', { id, ...updateOrdersModuleDto });
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ordersClient.send('remove', { id });
+    return this.ordersClient.send('updateOrder', {
+      id,
+      ...updateOrdersModuleDto,
+    });
   }
 }
