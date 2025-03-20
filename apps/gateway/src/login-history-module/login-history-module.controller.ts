@@ -1,12 +1,13 @@
 import {
+  Body,
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
   Inject,
+  Param,
+  Patch,
+  Post,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreateLoginHistoryDto } from 'apps/users/src/login-history/dto/create-login-history.dto';
@@ -19,19 +20,23 @@ export class LoginHistoryModuleController {
     private readonly loginHistoryClient: ClientProxy,
   ) {}
 
+  @UsePipes(new ValidationPipe())
   @Post()
   create(@Body() createLoginHistoryDto: CreateLoginHistoryDto) {
-    return this.loginHistoryClient.send('create', createLoginHistoryDto);
+    return this.loginHistoryClient.send(
+      'createLoginHistory',
+      createLoginHistoryDto,
+    );
   }
 
   @Get()
   findAll() {
-    return this.loginHistoryClient.send('findAll', {});
+    return this.loginHistoryClient.send('findAllLoginHistory', {});
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.loginHistoryClient.send('findOne', { id });
+    return this.loginHistoryClient.send('findLoginHistory', { id });
   }
 
   @Patch(':id')
@@ -39,14 +44,9 @@ export class LoginHistoryModuleController {
     @Param('id') id: string,
     @Body() updateLoginHistoryDto: UpdateLoginHistoryDto,
   ) {
-    return this.loginHistoryClient.send('update', {
+    return this.loginHistoryClient.send('updateLoginHistory', {
       id,
       ...updateLoginHistoryDto,
     });
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.loginHistoryClient.send('remove', { id });
   }
 }

@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
-import { LoginHistoryService } from './login-history.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { LoginHistoryEntity } from './entities/login-history.entity';
 import { LoginHistoryController } from './login-history.controller';
+import { LoginHistoryService } from './login-history.service';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([LoginHistoryEntity])],
   controllers: [LoginHistoryController],
   providers: [LoginHistoryService],
 })

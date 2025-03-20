@@ -8,7 +8,7 @@ import {
 import { UserEntity } from '../../users/entities/user.entity';
 
 @Entity('login_history')
-export class LoginHistory {
+export class LoginHistoryEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
