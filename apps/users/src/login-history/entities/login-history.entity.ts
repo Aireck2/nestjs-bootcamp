@@ -17,7 +17,7 @@ export class LoginHistoryEntity {
     eager: true,
   })
   @JoinColumn({ name: 'user_id' })
-  userId: number;
+  user: UserEntity;
 
   @CreateDateColumn({
     type: 'timestamptz',
