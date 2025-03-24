@@ -6,9 +6,8 @@ import {
   Param,
   Patch,
   Post,
-  ValidationPipe,
 } from '@nestjs/common';
-import { Inject, Query, UsePipes } from '@nestjs/common/decorators';
+import { Inject, Query } from '@nestjs/common/decorators';
 import { ClientProxy } from '@nestjs/microservices';
 import { PaginationDto } from 'apps/common/dtos/pagination.dto';
 import { CreateProductDto } from 'apps/products/src/products/dto/create-product.dto';
@@ -21,7 +20,6 @@ export class ProductsModuleController {
   ) {}
 
   @Post()
-  @UsePipes(new ValidationPipe())
   create(@Body() createProductDto: CreateProductDto) {
     return this.productClient.send('createProduct', createProductDto);
   }
