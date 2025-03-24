@@ -14,13 +14,13 @@ export class UserEntity {
   @Column({ length: 30 })
   name: string;
 
-  @Column({ length: 30 })
+  @Column({ length: 30, unique: true })
   email: string;
 
-  @Column({ length: 30 })
+  @Column({ length: 255, select: false })
   password: string;
 
-  @Column({ length: 15 })
+  @Column({ length: 15, default: 'user' })
   role: string;
 
   @Column({ name: 'is_active', type: 'boolean', default: true })

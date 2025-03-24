@@ -8,8 +8,6 @@ import {
   Patch,
   Post,
   Query,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { PaginationDto } from 'apps/common/dtos/pagination.dto';
@@ -20,7 +18,6 @@ import { UpdateUserDto } from 'apps/users/src/users/dto/update-user.dto';
 export class UsersModuleController {
   constructor(@Inject('USERS_MS') private readonly usersClient: ClientProxy) {}
 
-  @UsePipes(new ValidationPipe())
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersClient.send('createUser', createUserDto);

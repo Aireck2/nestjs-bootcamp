@@ -7,8 +7,6 @@ import {
   Patch,
   Post,
   Query,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { PaginationDto } from 'apps/common/dtos/pagination.dto';
@@ -22,7 +20,6 @@ export class LoginHistoryModuleController {
     private readonly loginHistoryClient: ClientProxy,
   ) {}
 
-  @UsePipes(new ValidationPipe())
   @Post()
   create(@Body() createLoginHistoryDto: CreateLoginHistoryDto) {
     return this.loginHistoryClient.send(
