@@ -4,6 +4,7 @@
   "sourceRoot": "apps/gateway/src",
   "compilerOptions": {
     "deleteOutDir": true,
+    "plugins": ["@nestjs/swagger"],
     "webpack": true,
     "tsConfigPath": "apps/gateway/tsconfig.app.json"
   },
