@@ -10,10 +10,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { ApiTags } from '@nestjs/swagger';
 import { PaginationDto } from 'apps/common/dtos/pagination.dto';
 import { CreateUserDto } from 'apps/users/src/users/dto/create-user.dto';
 import { UpdateUserDto } from 'apps/users/src/users/dto/update-user.dto';
-
+@ApiTags('Users')
 @Controller('v1/users')
 export class UsersModuleController {
   constructor(@Inject('USERS_MS') private readonly usersClient: ClientProxy) {}

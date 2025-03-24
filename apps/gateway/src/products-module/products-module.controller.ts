@@ -9,10 +9,12 @@ import {
 } from '@nestjs/common';
 import { Inject, Query } from '@nestjs/common/decorators';
 import { ClientProxy } from '@nestjs/microservices';
+import { ApiTags } from '@nestjs/swagger';
 import { PaginationDto } from 'apps/common/dtos/pagination.dto';
 import { CreateProductDto } from 'apps/products/src/products/dto/create-product.dto';
 import { UpdateProductDto } from 'apps/products/src/products/dto/update-product.dto';
 
+@ApiTags('Products')
 @Controller('v1/products')
 export class ProductsModuleController {
   constructor(

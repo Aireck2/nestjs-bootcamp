@@ -9,10 +9,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { ApiTags } from '@nestjs/swagger';
 import { PaginationDto } from 'apps/common/dtos/pagination.dto';
 import { CreateLoginHistoryDto } from 'apps/users/src/login-history/dto/create-login-history.dto';
 import { UpdateLoginHistoryDto } from 'apps/users/src/login-history/dto/update-login-history.dto';
 
+@ApiTags('LoginHistory')
 @Controller('v1/login-history')
 export class LoginHistoryModuleController {
   constructor(

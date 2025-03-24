@@ -9,10 +9,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { ApiTags } from '@nestjs/swagger';
 import { PaginationDto } from 'apps/common/dtos/pagination.dto';
 import { CreateOrderDto } from 'apps/products/src/orders/dto/create-order.dto';
 import { UpdateOrderDto } from 'apps/products/src/orders/dto/update-order.dto';
 
+@ApiTags('Orders')
 @Controller('v1/orders')
 export class OrdersModuleController {
   constructor(
