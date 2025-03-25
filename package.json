@@ -13,7 +13,7 @@
     "start:debug": "nest start --debug --watch",
     "start:service1": "node dist/apps/products/main.js",
     "start:service2": "node dist/apps/users/main.js",
-    "start:service3": "node dist/apps/gateaway/main.js",
+    "start:service3": "node dist/apps/gateway/main.js",
     "start:prod": "concurrently -n \"Service1,Service2,Service3\" -c \"blue,green,yellow\" \"npm run start:service1\" \"npm run start:service2\" \"npm run start:service3\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
