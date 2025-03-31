@@ -21,12 +21,20 @@ export class ProductsService {
     };
   }
 
-  async findAll(paginationDto: PaginationDto) {
+  async findAll(paginationDto: PaginationDto & { hasDiscount?: boolean }) {
+    const whereCondition: { hasDiscount?: boolean } = {};
+
+    if (paginationDto.hasDiscount !== undefined) {
+      whereCondition.hasDiscount = paginationDto.hasDiscount;
+    }
+
     const { page = 1, per_page = PER_PAGE } = paginationDto;
 
     const [data, total] = await this.productRepository.findAndCount({
+      where: whereCondition,
       take: per_page,
       skip: (page - 1) * per_page,
+      order: { id: 'DESC' },
     });
 
     const pageInfo = getPageInfo(total, page, per_page);

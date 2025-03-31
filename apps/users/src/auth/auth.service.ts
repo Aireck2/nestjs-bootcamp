@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Repository } from 'typeorm';
+import { LoginHistoryService } from '../login-history/login-history.service';
 import { UserEntity } from '../users/entities/user.entity';
 import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
@@ -12,6 +13,8 @@ export class AuthService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    // @Inject(LoginHistoryService)
+    private readonly loginHistoryService: LoginHistoryService,
     private jwtService: JwtService,
   ) {}
   async login(loginDto: LoginDto) {
@@ -31,6 +34,11 @@ export class AuthService {
       return { message: 'Email or password is incorrect', data: null };
       // throw new UnauthorizedException('Email or password is incorrect');
     }
+
+    // Create login history
+    await this.loginHistoryService.create({
+      userId: user.id,
+    });
 
     const accessToken = this.jwtService.sign(
       { userId: user.id },

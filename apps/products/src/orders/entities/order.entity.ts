@@ -22,13 +22,19 @@ export class OrderEntity {
   @PrimaryGeneratedColumn({ name: 'order_id' })
   id: number;
 
-  @ManyToOne(() => ProductEntity, (product) => product.id, { eager: false })
-  @JoinColumn({ name: 'product_id' })
-  product: ProductEntity;
+  @Column({ name: 'product_id' })
+  productId: number;
 
-  @ManyToOne(() => UserEntity, (user) => user.id, { eager: false })
+  @ManyToOne(() => ProductEntity, { eager: false })
+  @JoinColumn({ name: 'product_id' })
+  product?: ProductEntity;
+
+  @Column({ name: 'user_id' })
+  userId: number;
+
+  @ManyToOne(() => UserEntity, { eager: false })
   @JoinColumn({ name: 'user_id' })
-  user: UserEntity;
+  user?: UserEntity;
 
   @Column({
     type: 'enum',

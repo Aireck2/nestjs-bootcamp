@@ -26,6 +26,10 @@ export class OrdersService {
     const [data, total] = await this.orderRepository.findAndCount({
       take: per_page,
       skip: (page - 1) * per_page,
+      relations: ['product', 'user'],
+      order: {
+        id: 'DESC',
+      },
     });
 
     const pageInfo = getPageInfo(total, page, per_page);

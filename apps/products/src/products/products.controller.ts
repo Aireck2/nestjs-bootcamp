@@ -15,7 +15,7 @@ export class ProductsController {
   }
 
   @MessagePattern('findAllProducts')
-  findAll(@Payload() paginationDto: PaginationDto) {
+  findAll(@Payload() paginationDto: PaginationDto & { hasDiscount?: boolean }) {
     return this.productsService.findAll(paginationDto);
   }
 

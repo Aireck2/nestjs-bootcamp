@@ -8,5 +8,6 @@ import { LoginHistoryService } from './login-history.service';
   imports: [TypeOrmModule.forFeature([LoginHistoryEntity])],
   controllers: [LoginHistoryController],
   providers: [LoginHistoryService],
+  exports: [LoginHistoryService],
 })
 export class LoginHistoryModule {}

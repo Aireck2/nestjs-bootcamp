@@ -27,8 +27,17 @@ export class ProductsModuleController {
   }
 
   @Get()
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.productClient.send('findAllProducts', paginationDto);
+  findAll(@Query() paginationDto: PaginationDto & { has_discount?: string }) {
+    const discountFilter =
+      paginationDto.has_discount === 'true'
+        ? true
+        : paginationDto.has_discount === 'false'
+          ? false
+          : undefined;
+    return this.productClient.send('findAllProducts', {
+      ...paginationDto,
+      hasDiscount: discountFilter,
+    });
   }
 
   @Get(':id')

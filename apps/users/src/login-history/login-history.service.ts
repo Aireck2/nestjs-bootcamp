@@ -26,7 +26,8 @@ export class LoginHistoryService {
     const [data, total] = await this.loginHistoryRepository.findAndCount({
       take: per_page,
       skip: (page - 1) * per_page,
-      relations: ['user'], // Ensure this relation exists in the entity
+      relations: ['user'],
+      order: { id: 'DESC' },
     });
     const pageInfo = getPageInfo(total, page, per_page);
 
